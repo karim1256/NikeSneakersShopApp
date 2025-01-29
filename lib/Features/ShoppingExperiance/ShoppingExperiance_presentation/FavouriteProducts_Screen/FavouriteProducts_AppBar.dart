@@ -7,18 +7,18 @@ import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperian
 
 PreferredSizeWidget FavoriteProductsAppBar(BuildContext? c) {
   return ApplicationAppBar(
-      leadingAppBar: null,
-      /*CircularAppcontainer(
-      IconButton(
-        onPressed: () {
-          Provider.of<FeatureProvider>(c!, listen: false).ChangePage(0);
-        },
-        icon: Icon(
-          Icons.arrow_back,
-        ),
-      ),
-    ),
-    */
+      // leadingAppBar: MaterialButton(
+      //   onPressed: () {
+      //     Navigator.pop(c!);
+      //   },
+      //   child: CircularAppcontainer(
+      //     Center(
+      //       child: Icon(
+      //         Icons.arrow_back_ios,
+      //       ),
+      //     ),
+      //   ),
+      // ),
       title: "Favourite",
       actionAppBar: null
 

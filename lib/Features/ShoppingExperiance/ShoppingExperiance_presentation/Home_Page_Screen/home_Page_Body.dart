@@ -9,12 +9,9 @@ import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperian
 import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/Home_Page_Screen/OfferSlider.dart';
 import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/Home_Page_Screen/SearchTextFormField.dart';
 
-class HomePageBody extends StatefulWidget {
+class HomePageBody extends StatelessWidget {
   const HomePageBody({super.key});
-  _HomePageBodyState createState() => _HomePageBodyState();
-}
 
-class _HomePageBodyState extends State<HomePageBody> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -23,49 +20,25 @@ class _HomePageBodyState extends State<HomePageBody> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Row(
               children: [
                 SearchTextFormField(),
-                SizedBox(
-                  width: 5,
-                ),
-                MaterialButton(
-                  onPressed: () {
-                    FilterProducts(context);
-                  },
-                  child: CircularAppcontainer(
-                    Icon(
-                      Icons.filter_list,
-                      color: MainColor,
-                      size: 25,
-                    ),
-                    ContainerColor: Colors.blue,
-                  ),
-                )
+                const SizedBox(width: 5),
+                Filter()
               ],
             ),
-
-            SizedBox(height: 22),
+            const SizedBox(height: 14),
             AppText("Select Category", 'H2'),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ListCategory(false),
-
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             ProductViewContainer(),
-            SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             AppText("New Offers", 'H2'),
-            SizedBox(
-              height: 6,
-            ),
+            const SizedBox(height: 6),
             OfferSlider(),
-            SizedBox(
-              height: 13,
-            ),
-
-            // Wrapping ProductViewContainer in Expanded to allow it to fill space
+            const SizedBox(height: 13),
           ],
         ),
       ),

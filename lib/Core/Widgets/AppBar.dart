@@ -19,7 +19,9 @@ class ApplicationAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: MainColor,
-      leading: leadingAppBar, // Pass the leading widget directly
+
+      leading: leadingAppBar ?? Text(""),
+      // Pass the leading widget directly
       title: Text(
         title,
         style: TextStyle(

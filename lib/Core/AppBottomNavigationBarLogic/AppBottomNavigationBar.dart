@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:nikesneakersshopapp/Core/Widgets/Theme.dart';
+import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/FavouriteProducts_Screen/FavouriteProducts_Screen.dart';
+import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/Home_Page_Screen/Home_Page_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/Models/provider.dart';
+import 'package:nikesneakersshopapp/Features/AccountService/AccountService_Presentation/ProfilePage/Profile_Screen.dart';
+import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/Models/AccountServiceProvider.dart';
 
 class AppNavigationBar extends StatefulWidget {
   const AppNavigationBar({super.key});
@@ -14,6 +19,9 @@ class AppNavigationBar extends StatefulWidget {
 class _AppNavigationBarState extends State<AppNavigationBar> {
   @override
   Widget build(BuildContext context) {
+    final p = Provider.of<FeatureProvider>(context, listen: false);
+    final p2 = Provider.of<AccountServiceProvider>(context, listen: false);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -28,15 +36,15 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
           child: GNav(
-            rippleColor: Colors.blue,
-            hoverColor: Colors.blue,
+            rippleColor: Colors.lightBlue,
+            hoverColor: Colors.lightBlue,
             gap: 8,
             haptic: true,
             activeColor: Colors.white,
             iconSize: 24,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             duration: Duration(milliseconds: 400),
-            tabBackgroundColor: Colors.blue,
+            tabBackgroundColor: Bluetheme,
             color: Colors.black,
             tabs: [
               GButton(
@@ -58,11 +66,10 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
                 text: 'Profile',
               ),
             ],
-            selectedIndex: Provider.of<FeatureProvider>(context).SelectedPage,
+            selectedIndex: p.SelectedPage,
             onTabChange: (index) {
-              // Directly change the page without setState
-              Provider.of<FeatureProvider>(context, listen: false)
-                  .ChangePage(index);
+              p.ChangePage(index);
+              p.BottomNavigation(context);
             },
           ),
         ),

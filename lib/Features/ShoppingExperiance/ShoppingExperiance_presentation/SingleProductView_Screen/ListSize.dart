@@ -3,19 +3,13 @@ import 'package:nikesneakersshopapp/Core/Widgets/Theme.dart';
 import 'package:provider/provider.dart';
 import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/Models/provider.dart';
 
-class ListSize extends StatefulWidget {
-  const ListSize({Key? key}) : super(key: key);
+class ListSize extends StatelessWidget {
+  List<int> productSizeOptions;
+  ListSize(this.productSizeOptions, {Key? key}) : super(key: key);
 
-  @override
-  State<ListSize> createState() => _ListSizeState();
-}
-
-class _ListSizeState extends State<ListSize> {
   @override
   Widget build(BuildContext context) {
-    final p = Provider.of<FeatureProvider>(context, listen: false);
-    List<int> productSizeOptions =
-        p.SingleProduct()["size"]; // Ensure the list is correctly casted
+    final p = Provider.of<FeatureProvider>(context);
 
     return Container(
       height: 50,
@@ -27,11 +21,8 @@ class _ListSizeState extends State<ListSize> {
         itemBuilder: (BuildContext context, int index) {
           return MaterialButton(
             onPressed: () {
-              setState(() {
-                p.productSize =
-                    productSizeOptions[index]; // Update the selected size
-                print(p.productSize);
-              });
+              p.SETproductSize(
+                  productSizeOptions[index]); // Update selected size
             },
             child: Container(
               width: 60,

@@ -1,7 +1,6 @@
 import 'dart:js';
 
 import 'package:flutter/material.dart';
-import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/Home_Page_Screen/FilterizeTextFormField.dart';
 import 'Theme.dart';
 import 'package:provider/provider.dart';
 import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/Models/provider.dart';
@@ -16,7 +15,7 @@ CircularAppcontainer(Widget AppBarIcon, {double? size, Color? ContainerColor}) {
         height: size == null ? 50 : size,
         decoration: BoxDecoration(
           color: ContainerColor == null ? Colors.white : ContainerColor,
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(80),
         ),
         alignment: Alignment.center,
         child: AppBarIcon,
@@ -31,6 +30,29 @@ Widget AppText(String title, TextType) {
     style: TextStyle(
         fontSize: TextType == 'H1' ? 27 : 20, fontWeight: FontWeight.bold),
   );
+}
+
+Widget NoProductsFound() {
+  return Center(
+      child: Container(
+    height: 160,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(width: 5),
+        Text(
+          "No Shoes Found",
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(width: 10),
+        Image.asset(
+          'lib/Core/Assets/NikeBlackLogo.png',
+          width: 80,
+          height: 50,
+        ),
+      ],
+    ),
+  ));
 }
 
 /*

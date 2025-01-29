@@ -23,10 +23,8 @@ class _SearchTextFormFieldState extends State<SearchTextFormField> {
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          setState(() {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => SearchBody()));
-          });
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => SearchBody()));
         });
       }
     });

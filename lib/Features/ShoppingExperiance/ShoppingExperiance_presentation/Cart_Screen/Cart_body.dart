@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nikesneakersshopapp/Core/Widgets/NoShoesFound.dart';
 import 'package:nikesneakersshopapp/Core/Widgets/Theme.dart';
 import 'package:nikesneakersshopapp/Core/Widgets/Widgets.dart';
 import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/Models/provider.dart';
@@ -17,7 +16,7 @@ class CartBody extends StatefulWidget {
 class _CartBodyState extends State<CartBody> {
   @override
   Widget build(BuildContext context) {
-    final p = Provider.of<FeatureProvider>(context, listen: false);
+    final p = Provider.of<FeatureProvider>(context);
 
     double SubTotal(double k, int i) {
       double sub = 0;
@@ -65,7 +64,8 @@ class _CartBodyState extends State<CartBody> {
                       children: [
                         MaterialButton(
                           onPressed: () {
-                            p.CartProductDelete(p.Cart[i]["id"]);
+                            p.CartProductDelete(
+                                p.Cart[i]["id"], p.Cart[i]["size"]);
                           },
                           child: Container(
                             height: 140,
@@ -181,9 +181,7 @@ class _CartBodyState extends State<CartBody> {
                             children: <Widget>[
                               MaterialButton(
                                 onPressed: () {
-                                  setState(() {
-                                    ++p.Cart[i]["quantity"];
-                                  });
+                                  p.IncOrDecQuantity("Inc", i);
                                 },
                                 child: Quantity(true),
                               ),
@@ -193,11 +191,10 @@ class _CartBodyState extends State<CartBody> {
                               ),
                               MaterialButton(
                                 onPressed: () {
-                                  setState(() {
-                                    p.Cart[i]["quantity"] == 1
-                                        ? p.CartProductDelete(p.Cart[i]['id'])
-                                        : --p.Cart[i]["quantity"];
-                                  });
+                                  p.Cart[i]["quantity"] == 1
+                                      ? p.CartProductDelete(
+                                          p.Cart[i]['id'], p.Cart[i]["size"])
+                                      : p.IncOrDecQuantity("Dec", i);
                                 },
                                 child: Quantity(false),
                               ),

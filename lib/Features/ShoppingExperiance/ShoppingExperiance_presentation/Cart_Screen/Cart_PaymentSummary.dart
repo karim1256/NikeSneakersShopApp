@@ -8,7 +8,6 @@ import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperian
 
 class CartPaymentSummary extends StatelessWidget {
   String ButtonText;
-
   CartPaymentSummary(this.ButtonText, {super.key});
 
   @override
@@ -31,12 +30,30 @@ class CartPaymentSummary extends StatelessWidget {
                 style: TextStyle(fontSize: 16, color: Colors.grey[800]),
               ),
               Text(
-                p.getSubTotal().toString(), // Call SubTotal() to get the value
+                p
+                    .getSubTotal()
+                    .toStringAsFixed(2), // Call SubTotal() to get the value
                 style: TextStyle(fontSize: 16, color: Colors.black),
               ),
             ],
           ),
-          SizedBox(height: 5),
+          p.Getapplydiscount
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Disscount',
+                      style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+                    ),
+                    Text(
+                      '${p.dispersentage}%',
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                    ),
+                  ],
+                )
+              : SizedBox(
+                  height: 0,
+                ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -50,7 +67,6 @@ class CartPaymentSummary extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 13),
 
           // Dashed Divider
           Container(
@@ -72,7 +88,7 @@ class CartPaymentSummary extends StatelessWidget {
                 ),
               ),
               Text(
-                '\$${(p.getSubTotal() + 60.20).toStringAsFixed(2)}', // Add the delivery cost to the subtotal
+                '\$${(p.TotalCost()).toStringAsFixed(2)}', // Add the delivery cost to the subtotal
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -81,7 +97,7 @@ class CartPaymentSummary extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 15),
+          SizedBox(height: 10),
 
           // Checkout Button
           ElevatedButton(

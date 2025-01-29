@@ -9,20 +9,17 @@ import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperian
 import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/Home_Page_Screen/home_Page_Body.dart';
 import 'package:nikesneakersshopapp/Core/Widgets/Theme.dart';
 import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/Home_Page_Screen/Products_View_Container.dart';
+import 'Drawer.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: HomeDrawer(),
         backgroundColor: MainColor,
-        appBar: HomePageAppBar(),
+        appBar: HomePageAppBar(context),
         body: HomePageBody(),
         bottomNavigationBar: AppNavigationBar());
   }

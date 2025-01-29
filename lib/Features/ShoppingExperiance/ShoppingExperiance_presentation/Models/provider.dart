@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:nikesneakersshopapp/data.dart';
+import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/Home_Page_Screen/Products_View_Container.dart';
+import 'package:nikesneakersshopapp/Core/Widgets/ProductsView.dart';
+import 'package:nikesneakersshopapp/Core/Widgets/Theme.dart';
+import 'package:nikesneakersshopapp/Features/AccountService/AccountService_Presentation/ProfilePage/Profile_Screen.dart';
+import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/Cart_Screen/Cart_Screen.dart';
+import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/FavouriteProducts_Screen/FavouriteProducts_Screen.dart';
+import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/Home_Page_Screen/Home_Page_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:nikesneakersshopapp/Features/ShoppingExperiance/ShoppingExperiance_presentation/Models/AccountServiceProvider.dart';
+import 'package:nikesneakersshopapp/Features/AccountService/AccountService_Presentation/ProfilePage/ProfileView_Screen.dart';
 
 class FeatureProvider extends ChangeNotifier {
-//Filter/////////////////////////////////////
-  GlobalKey<FormState> priceFromKey = GlobalKey<FormState>();
-  GlobalKey<FormState> priceToKey = GlobalKey<FormState>();
-  TextEditingController priceToController = TextEditingController();
-  TextEditingController priceFromController = TextEditingController();
+// Offer Page/////////////////////////////////////
+  bool get GetOfferReadMore {
+    return offerReadMore;
+  }
 
-  /*submitFromPrice() {
-    if (priceFromKey.currentState!.validate()) {
-      priceFromKey.currentState!.save();
-    }
+  bool offerReadMore = false;
+
+  set SetOfferReadMore(bool val) {
+    offerReadMore = val;
+    notifyListeners();
   }
-  submitToPrice() {
-    if (priceToKey.currentState!.validate()) {
-      priceToKey.currentState!.save();
-    }
-  }
-  */
+
 ///////Filter Products////////////////////////////////////////////////
   String get PriceFromGET {
     return PriceFrom;
@@ -42,23 +47,28 @@ class FeatureProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-////Single Product /////////////////////////////////////////////////
+////Single Product /////////////////////////////////////////////////////
   int? sigleProductId;
 
-  set SigleProductIdSet(int? id) {
-    sigleProductId = id;
-    notifyListeners();
-  }
+  Map? SingleProduct() {
+    dynamic Product = {};
+    for (var i in Products) {
+      if (i['id'] == sigleProductId) {
+        Product = i;
 
-  Map SingleProduct() {
-    Map Product = {};
-    for (int i = 0; i <= Products.length - 1; i++) {
-      if (Products[i]["id"] == sigleProductId) {
-        Product = Products[i];
+        return Product;
       }
     }
+  }
 
-    return Product;
+  bool get GetSingleProductReadMore {
+    return singleProductReadMore;
+  }
+
+  bool singleProductReadMore = false;
+  set SetSingleProductReadMore(bool val) {
+    singleProductReadMore = val;
+    notifyListeners();
   }
 
   ////Filter Category/////////////////////////////////////////////
@@ -72,6 +82,41 @@ class FeatureProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  String _filterValue = "";
+  String get GETFilterValue => _filterValue;
+
+  set SETfilterValue(String category) {
+    _filterValue = category;
+    notifyListeners();
+  }
+
+  List<Map> FilterCategories() {
+    List<Map> filteredCategories = [];
+    // Assuming you have ToOnsave and FromOnsave variables available
+
+    for (Map product in Products) {
+      if (SelactedCategory == 'All Shoes') {
+        filteredCategories.add(product);
+      }
+      if (product['Category'] == SelactedCategory) {
+        filteredCategories.add(product);
+      }
+    }
+    if (GETFilterValue.isNotEmpty) {
+      if (GETFilterValue == "Price") {
+        // Sort by price
+        filteredCategories.sort((a, b) => a['price'].compareTo(b['price']));
+      } else {
+        // Filter by feature
+        filteredCategories = filteredCategories
+            .where((product) => product['feature'] == GETFilterValue)
+            .toList();
+      }
+    }
+
+    return filteredCategories;
+  }
+
   ////Navigation bar////////////////////////////////////////////////////////
   int _selectedPage = 0;
   int get SelectedPage => _selectedPage;
@@ -81,28 +126,89 @@ class FeatureProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  //////Search Shoes //////////////////////////////////////////////////////
-  bool? get SearchGET {
-    return search;
-  }
+  Widget NavigationWidget = HomePage();
+  // void BottomNavigationCondation(BuildContext context) {
+  //   if (NavigationWidget == ProfileScreen) {
+  //     print("********Navigate from profile page******************");
 
-  bool search = false;
+  //     Provider.of<AccountServiceProvider>(context, listen: false)
+  //         .NavigateFromProfile(context);
+  //   } else {
+  //     print("********Navigate from other pages******************");
 
-  set SearchSet(bool val) {
-    search = val;
+  //     BottomNavigation(context);
+  //   }
+  //   notifyListeners();
+  // }
+
+  void BottomNavigation(context) {
+    if (SelectedPage == 0) {
+      NavigationWidget = HomePage();
+    } else if (SelectedPage == 1) {
+      NavigationWidget = FavouriteProductsScreen();
+    } else if (SelectedPage == 2) {
+      NavigationWidget = const ProfileViewScreen();
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => NavigationWidget,
+      ),
+    );
     notifyListeners();
   }
 
-  /////Cart Page///////////////////////////////////////////////////
+  //////Search Shoes //////////////////////////////////////////////////////
+  List get SearchGET {
+    return _foundShoes;
+  }
+
+  List _foundShoes = Products;
+
+  set SearchSet(List val) {
+    _foundShoes = val;
+    notifyListeners();
+  }
+
+  /////Cart Page////////////////////////////////////////////////////////////////
+  bool _applydiscount = false;
+  bool get Getapplydiscount {
+    return _applydiscount;
+  }
+
+  set SetApplyDiscount(bool applyState) {
+    _applydiscount = applyState;
+    notifyListeners();
+  }
+
+  double? dispersentage;
+  double S = 0;
 
   double getSubTotal() {
-    return SubTotal.reduce(
-        (sum, item) => sum + item); // Sum all items in SubTotal
+    S = 0;
+
+    for (var i in Cart) {
+      S = S + i['quantity'] * i['price'];
+    }
+    Cart.isEmpty ? S = 0 : null;
+    return S;
+    notifyListeners();
+  }
+
+  double TotalCost() {
+    Getapplydiscount ? S = S - (S / 100 * dispersentage!) : null;
+    return S + 60.20;
   }
 
   List<Map> Cart = [];
   double Total = 0;
   List<double> SubTotal = [];
+
+  void IncOrDecQuantity(String Action, int index) {
+    Action == 'Inc' ? ++Cart[index]["quantity"] : --Cart[index]["quantity"];
+
+    notifyListeners();
+  }
 
   void AddSubTotal(double total, int index) {
     /* for (int i = 0; i <= Cart.length - 1; ++i) {
@@ -112,41 +218,14 @@ class FeatureProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /*double? GetSubTotal() {
-    double? sum;
-    for (var i in SubTotal) {
-      sum = sum! + i;
-    }
-    return sum;
-    notifyListeners();
-  }
-*/
   TotalPrice(double total) {
     //  for (int i=0 ; i<=Cart.length-1;++i) {
     Total += total;
     notifyListeners();
   }
 
-  /*
-  int Inc() {
-    ++q;
-    return q;
-
-    notifyListeners();
-  }
-
-  int dec(int id) {
-    if (q <= 0) {
-      CartProductDelete(id);
-    } else {
-      --q;
-    }
-    return q;
-    notifyListeners();
-  }
- */
-  void CartProductDelete(int id) {
-    Cart.removeWhere((item) => item["id"] == id);
+  void CartProductDelete(int id, int size) {
+    Cart.removeWhere((item) => item["id"] == id && item['size'] == size);
 
     notifyListeners();
   }
@@ -165,23 +244,69 @@ class FeatureProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int? productSize;
+  int? productSize = 0;
   SETproductSize(int size) {
-    productSize = size;
+    if (productSize == size) {
+      productSize = 0;
+    } else {
+      productSize = size;
+    }
+
     notifyListeners();
   }
 
-  bool? CartCheck(int id, {bool? k}) {
-    if (Cart.isEmpty) {
-      return false;
-    } else {
-      for (int i = 0; i <= Cart.length; ++i) {
-        if (id == Cart[i]["id"]) {
-          return true;
-        } else {
-          false;
+  // if (k.contains(id)) {
+
+  //   if (Cart[index]['size'] == size) {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // } else {
+  //   return false;
+  // }
+
+  // for (int i = 0; i <= Cart.length; i++) {
+  //   if (id == Cart[i]["id"]) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
+  // return false;
+
+  /////Favourite products/////////////////////////////////////////////////////
+  List<dynamic> foundShoes = [];
+  List<int> favouriteProductId = [];
+
+  List filterFavouritProducts() {
+    List FavouriteProducts = [];
+    for (int i = 0; i <= favouriteProductId.length - 1; i++) {
+      for (int j = 0; j <= Products.length - 1; j++) {
+        if (Products[j]['id'] == favouriteProductId[i]) {
+          FavouriteProducts.add(Products[j]);
         }
       }
     }
+    print(FavouriteProducts);
+    return FavouriteProducts;
+    notifyListeners();
+  }
+
+  void AddFavouriteProduct(int id) {
+    favouriteProductId.add(id);
+    notifyListeners();
+  }
+
+  void FavouriteProductDelete(int id) {
+    favouriteProductId.remove(id);
+    notifyListeners();
+  }
+
+  ///Check Out//////////////////////////
+  String selectedPaymentMethod = 'Cash';
+  void SetselectedPaymentMethod(String value) {
+    selectedPaymentMethod = value;
+    notifyListeners();
   }
 }

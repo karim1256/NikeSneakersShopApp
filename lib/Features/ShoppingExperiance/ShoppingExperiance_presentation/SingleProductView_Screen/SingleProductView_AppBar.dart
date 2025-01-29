@@ -10,8 +10,7 @@ PreferredSizeWidget SingleProductVieweAppBar(BuildContext c) {
       leadingAppBar: MaterialButton(
         onPressed: () {
           Navigator.pop(c);
-          Provider.of<FeatureProvider>(c, listen: false).SigleProductIdSet =
-              null;
+          Provider.of<FeatureProvider>(c, listen: false).sigleProductId = null;
           print(Provider.of<FeatureProvider>(c, listen: false).sigleProductId);
         },
         child: CircularAppcontainer(

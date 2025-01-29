@@ -38,7 +38,7 @@ class _ListCategoryState extends State<ListCategory> {
 
   @override
   Widget build(BuildContext context) {
-    final featureProvider = Provider.of<FeatureProvider>(context);
+    final p = Provider.of<FeatureProvider>(context);
 
     return Container(
       width: widget.Filter! ? 450 : 400, // Accessing Filter via widget
@@ -50,16 +50,14 @@ class _ListCategoryState extends State<ListCategory> {
           return MaterialButton(
             onPressed: () {
               setState(() {
-                featureProvider.SelactedCategory = category[index];
+                p.SelactedCategory = category[index];
               });
-              print(featureProvider.SelactedCategory);
+              print(p.SelactedCategory);
             },
             child: categoryAppContainer(
               category[index],
-              category[index] == featureProvider.SelactedCategory
-                  ? MainColor
-                  : Colors.black,
-              category[index] == featureProvider.SelactedCategory
+              category[index] == p.SelactedCategory ? MainColor : Colors.black,
+              category[index] == p.SelactedCategory
                   ? Bluetheme
                   : ContainersColor,
               widget.Filter, // Pass the Filter value correctly
